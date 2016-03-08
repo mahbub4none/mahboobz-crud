@@ -1,8 +1,9 @@
 <form action="" method="post">
-    Table Name <input type="text" name="table"/><br>
-    Fields Name <input type="text" name="fields"/><br>
+    Table Name <input type="text" name="table"/>
+    Fields Name <input type="text" name="fields"/>
      <input type="submit" name="submit" value="Submit"/><br>
 </form>
+"Fields Name should be comma separated like name,email,password ... "
 <?php
 if($_POST){
     $posted_fields = $_POST['fields'];
@@ -43,7 +44,8 @@ if($_POST){
     <input type="submit" name="delete" value="DELETE"/>
 </form>';
 
-    $all_sqls = "<?php
+    $all_sqls = "
+    <?php
 \$create_sql = \"INSERT into `$table` ($posted_fields) VALUES ($fields_post)\";
 
 \$read_sql = \"SELECT * FROM `$table`\";
@@ -52,7 +54,7 @@ if($_POST){
 
 \$delete_sql = \"DELETE FROM `$table` WHERE `id` = '\$_POST[id]'\";
 
-$con = mysqli_connect('localhost','root','mysql','crud',3306);
+\$con = mysqli_connect('localhost','root','mysql','crud',3306);
 
 if(\$_POST['submit'])
     mysqli_query(\$con,\$create_sql);
