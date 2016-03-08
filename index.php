@@ -1,11 +1,33 @@
 <form action="" method="post">
-    Table Name <input type="text" name="table"/>
-    Fields Name <input type="text" name="fields"/>
+    <h4>Database Connection Setup</h4>
+    <input type="text" name="localhost" placeholder="Host" required="required"/>
+    <input type="text" name="user" placeholder="User" required="required"/>
+    <input type="password" name="password" placeholder="Password" required="required"/>
+    <input type="text" name="db" placeholder="Database" required="required"/>
+
+    <h4>Table Setup</h4>
+    Table Name <input type="text" name="table" required="required"/>
+    Fields Name <input type="text" name="fields" required="required"/>
      <input type="submit" name="submit" value="Submit"/><br>
 </form>
 "Fields Name should be comma separated like name,email,password ... "
 <?php
 if($_POST){
+    $host = $_POST['localhost'];
+    $user = $_POST['user'];
+    $password = $_POST['password'];
+    $db = $_POST['db'];
+
+    if($host == ' ' || $user == ' ' || $password == ' ' || $db == ' '){
+        echo "Invalid value entered!";
+        exit;
+    }
+
+    $con = mysqli_connect($host,$user,$password,$db,3306);
+    if(!$con){
+        echo "No Database Connection Found!";
+        exit;
+    }
     $posted_fields = $_POST['fields'];
     $table = $_POST['table'];
 
@@ -54,7 +76,7 @@ if($_POST){
 
 \$delete_sql = \"DELETE FROM `$table` WHERE `id` = '\$_POST[id]'\";
 
-\$con = mysqli_connect('localhost','root','mysql','crud',3306);
+\$con = mysqli_connect('$host','$user','$password','$db',3306);
 
 if(\$_POST['submit'])
     mysqli_query(\$con,\$create_sql);
@@ -77,7 +99,6 @@ $update_form
 
     $table_query = "CREATE TABLE `$table` ( `id` INT NOT NULL AUTO_INCREMENT , ".$columns." , PRIMARY KEY (`id`) ) ENGINE = InnoDB;";
 
-    $con = mysqli_connect('localhost','root','mysql','crud',3306);
     mysqli_query($con,$table_query);
 
     $directory = 'crud_'.$table.'.php';
